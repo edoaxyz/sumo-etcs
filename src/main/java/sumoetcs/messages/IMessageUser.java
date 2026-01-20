@@ -1,4 +1,4 @@
-package org.sumoetcs.messages;
+package sumoetcs.messages;
 
 public interface IMessageUser {
     public void receive(Message message);

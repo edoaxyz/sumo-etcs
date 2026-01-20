@@ -1,4 +1,4 @@
-package org.sumoetcs.interlocking;
+package sumoetcs.interlocking;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,13 +7,15 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeSet;
 
-import org.sumoetcs.Train;
+import sumoetcs.Train;
+
+import java.util.TreeSet;
 
 public class Interlocking {
     public class Occupation {
-        private Occupation(Interlocking interlocking, Train train, List<Net.Track> tracks, double startPos, double endPos) {
+        private Occupation(Interlocking interlocking, Train train, List<Track> tracks, double startPos,
+                double endPos) {
             this.interlocking = interlocking;
             this.train = train;
             this.tracks = new LinkedList<>(tracks);
@@ -22,17 +24,24 @@ public class Interlocking {
             occupationByTrain.put(train, this);
         }
 
-        public void updateStart(Net.Track startingTrack, double startPos) {
-            while (startingTrack != this.tracks.getFirst()) {
-                interlocking.occupations.get(this.tracks.removeFirst()).remove(this);
+        public void updateStart(Track startingTrack, double startPos) {
+            List<Track> toRemove = new LinkedList<>();
+            while (this.tracks.size() > 0 && startingTrack != this.tracks.getFirst()) {
+                toRemove.add(this.tracks.removeFirst());
+            }
+            if (tracks.size() == 0) {
+                this.tracks.add(startingTrack);
+            }
+            for (var remove : toRemove) {
+                interlocking.occupations.get(remove).remove(this);
             }
             updateStartPosition(startPos);
         }
 
-        public void requestNextEOA(List<Net.Track> requestTracks, Double endPosition) {
+        public void requestNextEOA(List<Track> requestTracks, Double endPosition) {
             // First remove my occupations and build the new one with the previous until the
             // first requested is met
-            var newTracks = new LinkedList<Net.Track>();
+            var newTracks = new LinkedList<Track>();
             for (var track : tracks) {
                 interlocking.occupations.get(track).remove(this);
                 if (newTracks.size() == 0 || requestTracks.getFirst() != newTracks.getFirst()) {
@@ -47,9 +56,10 @@ public class Interlocking {
                     break;
                 }
             }
-            Double realEndPosition = Math.min(
-                    interlocking.occupations.get(requestTracks.getLast()).first().getStartPositionInTrack(requestTracks.getLast()),
-                    endPosition);
+            Occupation nextOccupation = interlocking.occupations.get(requestTracks.getLast()).ceiling(this);
+            Double realEndPosition = nextOccupation != null
+                    ? Math.min(nextOccupation.getStartPositionInTrack(requestTracks.getLast()), endPosition)
+                    : Double.POSITIVE_INFINITY;
             if (realEndPosition == 0) {
                 newTracks.removeLast();
                 realEndPosition = newTracks.getLast().getLength();
@@ -62,47 +72,46 @@ public class Interlocking {
         }
 
         public void free() {
-            for (var track: tracks) {
+            for (var track : tracks) {
                 interlocking.occupations.get(track).remove(this);
             }
             occupationByTrain.remove(train);
         }
 
-        public Double getStartPositionInTrack(Net.Track track) {
+        public Double getStartPositionInTrack(Track track) {
             if (track == tracks.getFirst())
                 return startPosition;
             return 0.;
         }
 
-        public Double getEndPositionInTrack(Net.Track track) {
+        public Double getEndPositionInTrack(Track track) {
             if (track == tracks.getLast())
                 return endPosition;
             return track.getLength();
         }
 
-
-        public Net.Track getFirstTrack() {
+        public Track getFirstTrack() {
             return tracks.getFirst();
         }
 
-        public Net.Track getLastTrack() {
+        public Track getLastTrack() {
             return tracks.getLast();
         }
 
         private void updateStartPosition(double position) {
-            Net.Track t = tracks.getFirst();
+            Track t = tracks.getFirst();
             this.startPosition = t.getBlockLength() > 0 ? Math.floor(position / t.getBlockLength()) * t.getBlockLength()
                     : position;
         }
 
         private void updateEndPosition(double position) {
-            Net.Track t = tracks.getFirst();
+            Track t = tracks.getFirst();
             this.endPosition = t.getBlockLength() > 0 ? Math.ceil(position / t.getBlockLength()) * t.getBlockLength()
                     : position;
         }
 
         private Train train;
-        private List<Net.Track> tracks;
+        private List<Track> tracks;
         private double startPosition;
         private double endPosition;
         private Interlocking interlocking;
@@ -124,11 +133,11 @@ public class Interlocking {
         return occupationByTrain.get(t);
     }
 
-    public Occupation createOccupation(Train train, List<Net.Track> tracks, double startPos, double endPos) {
+    public Occupation createOccupation(Train train, List<Track> tracks, double startPos, double endPos) {
         return new Occupation(this, train, tracks, startPos, endPos);
     }
 
-    private Map<Net.Track, TreeSet<Occupation>> occupations = new HashMap<>();
+    private Map<Track, TreeSet<Occupation>> occupations = new HashMap<>();
     private Map<Train, Occupation> occupationByTrain = new HashMap<>();
     private Net net;
 

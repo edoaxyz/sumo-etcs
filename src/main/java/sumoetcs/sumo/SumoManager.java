@@ -1,7 +1,9 @@
-package org.sumoetcs.sumo;
+package sumoetcs.sumo;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -30,8 +32,6 @@ public class SumoManager {
             if (obj == null)
                 return false;
             if (this == obj)
-                return true;
-            if (obj.equals(trigger))
                 return true;
             if (getClass() != obj.getClass())
                 return false;
@@ -68,18 +68,27 @@ public class SumoManager {
 
     public SumoManager(String configPath) {
         Simulation.preloadLibraries();
-        Simulation.load(new StringVector(new String[] { "sumo", "-c", configPath }));
+        Simulation.start(new StringVector(new String[] { "sumo-gui", "-c", configPath, "--start"}));
         currentTime = (int) Simulation.getTime() * 1000;
+    }
+
+    public void runAll() {
+        var endTime = Simulation.getEndTime() * 1000;
+        while (currentTime < endTime) {
+            nextStep();
+        }
     }
 
     public void nextStep() {
         Simulation.step();
-        currentTime = (int) Simulation.getTime() * 1000;
+        currentTime = (int) (Simulation.getTime() * 1000);
+        List<TriggerInfo> toReAdd = new LinkedList<>();
         while (stepTriggers.peek().trigger() == true) {
             TriggerInfo trigger = stepTriggers.poll().getNext();
             if (trigger != null)
-                stepTriggers.add(null);
+                toReAdd.add(trigger);
         }
+        stepTriggers.addAll(toReAdd);
     }
 
     public void stepSubscribe(IStepTrigger o, boolean once) {
@@ -98,7 +107,7 @@ public class SumoManager {
     }
 
     public void stepUnsubscribe(IStepTrigger o) {
-        stepTriggers.remove(o);
+        stepTriggers.remove(new TriggerInfo(o, currentTime, false));
     }
 
     public int getCurrentTime() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2026-01-19T09:49:38.372946+01:00 by Eclipse SUMO sumo 1.25.0
+<!-- generated on 2026-01-19T18:11:24.820439+01:00 by Eclipse SUMO sumo 1.25.0
 -->
 
 <sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
@@ -12,7 +12,13 @@
     <input>
         <net-file value="test1.net.xml"/>
         <route-files value="test1.rou.xml"/>
+        <additional-files value="test1.add.xml"/>
     </input>
+
+    <time>
+        <end value="3600"/>
+        <step-length value="0.001"/>
+    </time>
 
     <gui_only>
         <edgedata-files value=""/>

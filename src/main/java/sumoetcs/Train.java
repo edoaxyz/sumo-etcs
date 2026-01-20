@@ -1,21 +1,21 @@
-package org.sumoetcs;
+package sumoetcs;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import org.eclipse.sumo.libtraci.Edge;
 import org.eclipse.sumo.libtraci.Lane;
 import org.eclipse.sumo.libtraci.Simulation;
 import org.eclipse.sumo.libtraci.StringVector;
 import org.eclipse.sumo.libtraci.Vehicle;
 import org.eclipse.sumo.libtraci.VehicleType;
-import org.sumoetcs.messages.IMessageUser;
-import org.sumoetcs.messages.Message;
-import org.sumoetcs.messages.MovementAuthority;
-import org.sumoetcs.messages.PositionReport;
-import org.sumoetcs.sumo.IStepTrigger;
-import org.sumoetcs.sumo.SumoManager;
+
+import sumoetcs.messages.IMessageUser;
+import sumoetcs.messages.Message;
+import sumoetcs.messages.MovementAuthority;
+import sumoetcs.messages.PositionReport;
+import sumoetcs.sumo.IStepTrigger;
+import sumoetcs.sumo.SumoManager;
 
 public class Train implements IStepTrigger, IMessageUser {
 
@@ -23,13 +23,13 @@ public class Train implements IStepTrigger, IMessageUser {
         this.id = id;
         this.typeId = Vehicle.getTypeID(id);
         this.rbc = rbc;
-        this.length = Vehicle.getLength(typeId);
+        this.length = Vehicle.getLength(id);
 
-        this.positionReportInterval = Integer.parseInt(VehicleType.getParameter(id, "positionReportInterval"));
-        this.delayInMean = Float.parseFloat(VehicleType.getParameter(id, "delayInMean"));
-        this.delayInStd = Float.parseFloat(VehicleType.getParameter(id, "delayInStd"));
-        this.delayOutMean = Float.parseFloat(VehicleType.getParameter(id, "delayOutMean"));
-        this.delayOutStd = Float.parseFloat(VehicleType.getParameter(id, "delayOutStd"));
+        this.positionReportInterval = Integer.parseInt(VehicleType.getParameter(typeId, "positionReportInterval"));
+        this.delayInMean = Float.parseFloat(VehicleType.getParameter(typeId, "delayInMean"));
+        this.delayInStd = Float.parseFloat(VehicleType.getParameter(typeId, "delayInStd"));
+        this.delayOutMean = Float.parseFloat(VehicleType.getParameter(typeId, "delayOutMean"));
+        this.delayOutStd = Float.parseFloat(VehicleType.getParameter(typeId, "delayOutStd"));
 
         this.sumoManager = sumoManager;
         sumoManager.stepSubscribe(this, true);
@@ -40,8 +40,18 @@ public class Train implements IStepTrigger, IMessageUser {
     public void receive(Message message) {
         if (message instanceof MovementAuthority) {
             MovementAuthority ma = (MovementAuthority)message;
-            Vehicle.setStop(id, ma.getEdgeIdEOA(), ma.getPositionEOA(), 0, 0);
-            Vehicle.setStop(id, ma.getEdgeIdEOA(), ma.getPositionEOA(), 0, Simulation.getEndTime());
+            if (ma.getPositionEOA() == Double.POSITIVE_INFINITY) {
+                if (lastEOAPos >= 0) {
+                    Vehicle.setStop(id, lastEOAEdge, lastEOAPos, 0, 0);
+                    lastEOAEdge = "";
+                    lastEOAPos = -1;
+                }
+            } else {
+                if (lastEOAPos >= 0) Vehicle.setStop(id, lastEOAEdge, lastEOAPos, 0, 0);
+                Vehicle.setStop(id, ma.getEdgeIdEOA(), ma.getPositionEOA(), 0, Simulation.getEndTime());
+                lastEOAEdge = ma.getEdgeIdEOA();
+                lastEOAPos = ma.getPositionEOA();
+            } 
         }
     }
 
@@ -67,9 +77,17 @@ public class Train implements IStepTrigger, IMessageUser {
         return length;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void free() {
+        sumoManager.stepUnsubscribe(this);
+    }
+
     private void sendPositionReport() {
         double frontPos = Vehicle.getLanePosition(id);
-        double relativePos = Vehicle.getLanePosition(id) - Vehicle.getLength(typeId);
+        double relativePos = Vehicle.getLanePosition(id) - Vehicle.getLength(id);
         int index = Vehicle.getRouteIndex(id);
         StringVector route = Vehicle.getRoute(id);
         List<String> nextEdges = route.subList(index, route.size());
@@ -91,12 +109,13 @@ public class Train implements IStepTrigger, IMessageUser {
     private double length;
 
     private SumoManager sumoManager;
+    private String lastEOAEdge = "";
+    private double lastEOAPos = -1;
     
     private int positionReportInterval;
     private float delayInMean;
     private float delayInStd;
     private float delayOutMean;
     private float delayOutStd;
-
 
 }

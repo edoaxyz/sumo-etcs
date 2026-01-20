@@ -1,4 +1,4 @@
-package org.sumoetcs;
+package sumoetcs;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,14 +11,16 @@ import java.util.Set;
 
 import org.eclipse.sumo.libtraci.Simulation;
 import org.eclipse.sumo.libtraci.Vehicle;
-import org.sumoetcs.interlocking.Interlocking;
-import org.sumoetcs.interlocking.Net;
-import org.sumoetcs.messages.IMessageUser;
-import org.sumoetcs.messages.Message;
-import org.sumoetcs.messages.MovementAuthority;
-import org.sumoetcs.messages.PositionReport;
-import org.sumoetcs.sumo.IStepTrigger;
-import org.sumoetcs.sumo.SumoManager;
+
+import sumoetcs.interlocking.Interlocking;
+import sumoetcs.interlocking.Net;
+import sumoetcs.interlocking.Track;
+import sumoetcs.messages.IMessageUser;
+import sumoetcs.messages.Message;
+import sumoetcs.messages.MovementAuthority;
+import sumoetcs.messages.PositionReport;
+import sumoetcs.sumo.IStepTrigger;
+import sumoetcs.sumo.SumoManager;
 
 public class RBC implements IStepTrigger, IMessageUser {
     public static final Set<String> ALLOWED_CLASSES = new HashSet<>(
@@ -43,13 +45,14 @@ public class RBC implements IStepTrigger, IMessageUser {
     public void receive(Message message) {
         if (message instanceof PositionReport) {
             PositionReport prMess = (PositionReport) message;
+            if (!trains.containsKey(prMess.getTrain().getId())) return;
             Interlocking.Occupation occ = interlocking.getOccupation(prMess.getTrain());
             double startPos = 0, endPos = 0;
-            var tracks = new LinkedList<Net.Track>();
+            var tracks = new LinkedList<Track>();
             for (var edge : prMess.getOccupiedEdges()) {
                 var t = net.toTrack(edge, prMess.getOccupiedEdges().getFirst().equals(edge) ? prMess.getBackPosition() : 0);
                 if (prMess.getOccupiedEdges().getFirst().equals(edge)) startPos = t.getValue();
-                if (t.getKey() != tracks.getLast()) tracks.add(t.getKey());
+                if (tracks.size() == 0 || t.getKey() != tracks.getLast()) tracks.add(t.getKey());
                 if (prMess.getOccupiedEdges().getLast().equals(edge)) endPos = t.getValue() + prMess.getFrontPosition();
             }
             if (occ == null) {
@@ -59,16 +62,17 @@ public class RBC implements IStepTrigger, IMessageUser {
             }
             tracks = new LinkedList<>();
             for (var edge: prMess.getNextEdges()) {
-                var t = net.toTrack(edge, 0);
-                if (tracks.getLast() != t.getKey()) {
+                var t = net.toTrack(edge, -1);
+                if (tracks.size() == 0 || tracks.getLast() != t.getKey()) {
                     tracks.add(t.getKey());
                 }
+                endPos = t.getValue();
             }
-            occ.requestNextEOA(tracks, 1.);
+            occ.requestNextEOA(tracks, endPos);
 
             // TODO: add startEdge to MA?
-            var startEdge = net.toEdge(occ.getFirstTrack(), startPos);
-            var endEdge = net.toEdge(occ.getLastTrack(), endPos);
+            var startEdge = net.toEdge(occ.getFirstTrack(), occ.getStartPositionInTrack(occ.getFirstTrack()));
+            var endEdge = net.toEdge(occ.getLastTrack(), occ.getEndPositionInTrack(occ.getLastTrack()));
             MovementAuthority maMessage = new MovementAuthority(this, prMess.getTrain(), endEdge.getKey(), endEdge.getValue());
             maMessage.send(sumoManager);
         }
@@ -85,8 +89,8 @@ public class RBC implements IStepTrigger, IMessageUser {
 
     private void refreshTrains() {
         Set<String> ids = new HashSet<>(trains.keySet());
-        for (var id : Simulation.getLoadedIDList()) {
-            if (!trains.containsKey(id) && ALLOWED_CLASSES.contains(Vehicle.getVehicleClass(Vehicle.getTypeID(id)))) {
+        for (var id : Vehicle.getIDList()) {
+            if (!trains.containsKey(id) && ALLOWED_CLASSES.contains(Vehicle.getVehicleClass(id))) {
                 Train t = new Train(id, this, sumoManager);
                 trains.put(id, t);
             }
@@ -95,6 +99,7 @@ public class RBC implements IStepTrigger, IMessageUser {
 
         for (var idToRemove : ids) {
             Train t = trains.remove(idToRemove);
+            t.free();
             Interlocking.Occupation occ = interlocking.getOccupation(t);
             if (occ != null)
                 occ.free();

@@ -1,8 +1,8 @@
-package org.sumoetcs.messages;
+package sumoetcs.messages;
 
 import java.util.List;
 
-import org.sumoetcs.Train;
+import sumoetcs.Train;
 
 public class MovementAuthority extends Message {
     public MovementAuthority(IMessageUser sender, IMessageUser recipient, String edgeIdEOA, double positionEOA) {

@@ -1,7 +1,7 @@
-package org.sumoetcs.messages;
+package sumoetcs.messages;
 
-import org.sumoetcs.sumo.IStepTrigger;
-import org.sumoetcs.sumo.SumoManager;
+import sumoetcs.sumo.IStepTrigger;
+import sumoetcs.sumo.SumoManager;
 
 public abstract class Message implements IStepTrigger {
 

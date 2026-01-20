@@ -1,8 +1,8 @@
-package org.sumoetcs.messages;
+package sumoetcs.messages;
 
 import java.util.List;
 
-import org.sumoetcs.Train;
+import sumoetcs.Train;
 
 public class PositionReport extends Message {
     public PositionReport(IMessageUser sender, IMessageUser recipient, double backPosition, double frontPosition,

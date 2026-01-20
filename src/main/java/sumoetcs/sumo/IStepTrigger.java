@@ -1,4 +1,4 @@
-package org.sumoetcs.sumo;
+package sumoetcs.sumo;
 
 public interface IStepTrigger {
     public void nextStep(int currentTime);
