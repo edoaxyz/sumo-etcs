@@ -7,10 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import org.eclipse.sumo.libtraci.Edge;
 import org.eclipse.sumo.libtraci.Lane;
@@ -57,9 +53,11 @@ public class Net {
                 edgeId = nextEdges.size() == 1 ? Lane.getEdgeID(nextEdges.get(0).getApproachedLane()) : null;
             }
         }
-        System.out.println("loaded net");
-        for (var edgeEntry: edgeToTrack.entrySet()) {
-            this.tracks.put(edgeEntry.getKey(), new Track(edgeEntry.getValue()));
+        for (var track: edgeToTrack.values()) {
+            Track t = new Track(track);
+            for (var edge: t.getEdges()) {
+                if (!this.tracks.containsKey(edge)) this.tracks.put(edge, t);
+            }
         }
     }
 

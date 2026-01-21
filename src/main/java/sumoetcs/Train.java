@@ -31,6 +31,7 @@ public class Train implements IStepTrigger, IMessageUser {
         this.delayOutMean = Float.parseFloat(VehicleType.getParameter(typeId, "delayOutMean"));
         this.delayOutStd = Float.parseFloat(VehicleType.getParameter(typeId, "delayOutStd"));
 
+        Vehicle.setSpeed(id, 0);
         this.sumoManager = sumoManager;
         sumoManager.stepSubscribe(this, true);
         sumoManager.stepSubscribeIn(this, positionReportInterval, false);
@@ -39,25 +40,23 @@ public class Train implements IStepTrigger, IMessageUser {
     @Override
     public void receive(Message message) {
         if (message instanceof MovementAuthority) {
-            MovementAuthority ma = (MovementAuthority)message;
-            if (ma.getPositionEOA() == Double.POSITIVE_INFINITY) {
-                if (lastEOAPos >= 0) {
-                    Vehicle.setStop(id, lastEOAEdge, lastEOAPos, 0, 0);
-                    lastEOAEdge = "";
-                    lastEOAPos = -1;
-                }
-            } else {
-                if (lastEOAPos >= 0) Vehicle.setStop(id, lastEOAEdge, lastEOAPos, 0, 0);
+            MovementAuthority ma = (MovementAuthority) message;
+            if (lastEOAEdge.equals("")) {
+                if (ma.getPositionEOA() > length || !ma.getEdgeIdEOA().equals(Vehicle.getRoadID(id))) Vehicle.setSpeed(id, -1);
+                else return;
+            }
+            if (lastEOAPos != Double.POSITIVE_INFINITY && lastEOAPos >= 0)
+                Vehicle.setStop(id, lastEOAEdge, lastEOAPos, 0, 0);
+            if (ma.getPositionEOA() != Double.POSITIVE_INFINITY) 
                 Vehicle.setStop(id, ma.getEdgeIdEOA(), ma.getPositionEOA(), 0, Simulation.getEndTime());
-                lastEOAEdge = ma.getEdgeIdEOA();
-                lastEOAPos = ma.getPositionEOA();
-            } 
+            lastEOAEdge = ma.getEdgeIdEOA();
+            lastEOAPos = ma.getPositionEOA();
         }
     }
 
     @Override
     public int generateDelay(Message message) {
-        return (int)Math.max(new Random().nextGaussian(delayOutMean, delayOutStd), 0);
+        return (int) Math.max(new Random().nextGaussian(delayOutMean, delayOutStd), 0);
     }
 
     @Override
@@ -86,20 +85,21 @@ public class Train implements IStepTrigger, IMessageUser {
     }
 
     private void sendPositionReport() {
-        double frontPos = Vehicle.getLanePosition(id);
-        double relativePos = Vehicle.getLanePosition(id) - Vehicle.getLength(id);
         int index = Vehicle.getRouteIndex(id);
         StringVector route = Vehicle.getRoute(id);
+        double frontPos = Vehicle.getLaneID(id).startsWith(":") ? Lane.getLength(route.get(index) + "_0")
+                : Vehicle.getLanePosition(id);
+        double endPos = frontPos - Vehicle.getLength(id);
         List<String> nextEdges = route.subList(index, route.size());
         List<String> occupiedEdges = new LinkedList<>(List.of(route.get(index)));
-        while (relativePos < 0) {
+        while (endPos < 0) {
             // Vehicle is not entirely on the edge, so we'll get the back one
             var edgeId = route.get(index - 1);
             occupiedEdges.add(0, edgeId);
-            relativePos = Lane.getLength(edgeId+"_0") + relativePos;
+            endPos = Lane.getLength(edgeId + "_0") + endPos;
             index--;
         }
-        Message m = new PositionReport(this, this.rbc, relativePos, frontPos, occupiedEdges, nextEdges);
+        Message m = new PositionReport(this, this.rbc, endPos, frontPos, occupiedEdges, nextEdges);
         m.send(sumoManager);
     }
 
@@ -111,7 +111,7 @@ public class Train implements IStepTrigger, IMessageUser {
     private SumoManager sumoManager;
     private String lastEOAEdge = "";
     private double lastEOAPos = -1;
-    
+
     private int positionReportInterval;
     private float delayInMean;
     private float delayInStd;

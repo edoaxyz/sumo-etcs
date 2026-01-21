@@ -49,26 +49,25 @@ public class RBC implements IStepTrigger, IMessageUser {
             Interlocking.Occupation occ = interlocking.getOccupation(prMess.getTrain());
             double startPos = 0, endPos = 0;
             var tracks = new LinkedList<Track>();
+            var nextEdges = new LinkedList<String>(prMess.getNextEdges());
             for (var edge : prMess.getOccupiedEdges()) {
                 var t = net.toTrack(edge, prMess.getOccupiedEdges().getFirst().equals(edge) ? prMess.getBackPosition() : 0);
                 if (prMess.getOccupiedEdges().getFirst().equals(edge)) startPos = t.getValue();
                 if (tracks.size() == 0 || t.getKey() != tracks.getLast()) tracks.add(t.getKey());
                 if (prMess.getOccupiedEdges().getLast().equals(edge)) endPos = t.getValue() + prMess.getFrontPosition();
+                if (nextEdges.getFirst().equals(edge)) nextEdges.removeFirst();
             }
             if (occ == null) {
                 occ = interlocking.createOccupation(prMess.getTrain(), tracks, startPos, endPos);
-            } else {
-                occ.updateStart(tracks.getFirst(), startPos);
             }
-            tracks = new LinkedList<>();
-            for (var edge: prMess.getNextEdges()) {
+            for (var edge: nextEdges) {
                 var t = net.toTrack(edge, -1);
                 if (tracks.size() == 0 || tracks.getLast() != t.getKey()) {
                     tracks.add(t.getKey());
                 }
                 endPos = t.getValue();
             }
-            occ.requestNextEOA(tracks, endPos);
+            occ.requestNextEOA(tracks, startPos, endPos);
 
             // TODO: add startEdge to MA?
             var startEdge = net.toEdge(occ.getFirstTrack(), occ.getStartPositionInTrack(occ.getFirstTrack()));

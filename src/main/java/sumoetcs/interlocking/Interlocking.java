@@ -19,52 +19,33 @@ public class Interlocking {
             this.interlocking = interlocking;
             this.train = train;
             this.tracks = new LinkedList<>(tracks);
-            updateStart(tracks.getFirst(), startPos);
-            updateEndPosition(endPos);
+            requestNextEOA(tracks, startPos, endPos);
             occupationByTrain.put(train, this);
         }
 
-        public void updateStart(Track startingTrack, double startPos) {
-            List<Track> toRemove = new LinkedList<>();
-            while (this.tracks.size() > 0 && startingTrack != this.tracks.getFirst()) {
-                toRemove.add(this.tracks.removeFirst());
-            }
-            if (tracks.size() == 0) {
-                this.tracks.add(startingTrack);
-            }
-            for (var remove : toRemove) {
-                interlocking.occupations.get(remove).remove(this);
-            }
-            updateStartPosition(startPos);
-        }
-
-        public void requestNextEOA(List<Track> requestTracks, Double endPosition) {
-            // First remove my occupations and build the new one with the previous until the
-            // first requested is met
+        public void requestNextEOA(List<Track> requestTracks, Double startPosition, Double endPosition) {
+            // First remove my occupations 
             var newTracks = new LinkedList<Track>();
             for (var track : tracks) {
                 interlocking.occupations.get(track).remove(this);
-                if (newTracks.size() == 0 || requestTracks.getFirst() != newTracks.getFirst()) {
-                    newTracks.add(track);
-                }
             }
-            newTracks.removeLast();
             // Add requested tracks
             for (var reqTrack : requestTracks) {
                 newTracks.add(reqTrack);
-                if (requestTracks.getLast() == reqTrack || interlocking.occupations.get(reqTrack).size() > 0) {
+                if (interlocking.occupations.get(reqTrack).ceiling(this) != null) {
                     break;
                 }
             }
-            Occupation nextOccupation = interlocking.occupations.get(requestTracks.getLast()).ceiling(this);
+            Occupation nextOccupation = interlocking.occupations.get(newTracks.getLast()).ceiling(this);
             Double realEndPosition = nextOccupation != null
-                    ? Math.min(nextOccupation.getStartPositionInTrack(requestTracks.getLast()), endPosition)
+                    ? Math.min(nextOccupation.getStartPositionInTrack(newTracks.getLast()), endPosition)
                     : Double.POSITIVE_INFINITY;
             if (realEndPosition == 0) {
                 newTracks.removeLast();
-                realEndPosition = newTracks.getLast().getLength();
+                realEndPosition = newTracks.getLast().getLength() - 0.1;
             }
             this.tracks = newTracks;
+            updateStartPosition(startPosition);
             updateEndPosition(realEndPosition);
             for (var newTrack : newTracks) {
                 interlocking.occupations.get(newTrack).add(this);
