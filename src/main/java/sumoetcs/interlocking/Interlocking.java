@@ -38,7 +38,7 @@ public class Interlocking {
             }
             Occupation nextOccupation = interlocking.occupations.get(newTracks.getLast()).ceiling(this);
             Double realEndPosition = nextOccupation != null
-                    ? Math.min(nextOccupation.getStartPositionInTrack(newTracks.getLast()), endPosition)
+                    ? nextOccupation.getStartPositionInTrack(newTracks.getLast())
                     : Double.POSITIVE_INFINITY;
             if (realEndPosition == 0) {
                 newTracks.removeLast();

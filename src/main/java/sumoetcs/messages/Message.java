@@ -12,6 +12,7 @@ public abstract class Message implements IStepTrigger {
 
     public void send(SumoManager sumoManager) {
         this.delay = sender.generateDelay(this);
+        this.time = sumoManager.getCurrentTime();
         sumoManager.stepSubscribeIn(this, this.delay, true);
     }
 
@@ -27,7 +28,12 @@ public abstract class Message implements IStepTrigger {
         return recipient;
     }
 
+    public int getTime() {
+        return time;
+    }
+
     protected int delay;
+    protected int time;
     protected IMessageUser sender;
     protected IMessageUser recipient;
 }

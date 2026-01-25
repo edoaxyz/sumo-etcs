@@ -41,16 +41,20 @@ public class Train implements IStepTrigger, IMessageUser {
     public void receive(Message message) {
         if (message instanceof MovementAuthority) {
             MovementAuthority ma = (MovementAuthority) message;
-            if (lastEOAEdge.equals("")) {
-                if (ma.getPositionEOA() > length || !ma.getEdgeIdEOA().equals(Vehicle.getRoadID(id))) Vehicle.setSpeed(id, -1);
-                else return;
+            if (lastEOA != null) {
+                if (ma.getTime() <= lastEOA.getTime())
+                    return;
+                if (lastEOA.getPositionEOA() != Double.POSITIVE_INFINITY && lastEOA.getPositionEOA() >= 0)
+                    Vehicle.setStop(id, lastEOA.getEdgeIdEOA(), lastEOA.getPositionEOA(), 0, 0);
+            } else {
+                if (ma.getPositionEOA() > length || !ma.getEdgeIdEOA().equals(Vehicle.getRoadID(id)))
+                    Vehicle.setSpeed(id, -1);
+                else
+                    return;
             }
-            if (lastEOAPos != Double.POSITIVE_INFINITY && lastEOAPos >= 0)
-                Vehicle.setStop(id, lastEOAEdge, lastEOAPos, 0, 0);
-            if (ma.getPositionEOA() != Double.POSITIVE_INFINITY) 
+            if (ma.getPositionEOA() != Double.POSITIVE_INFINITY)
                 Vehicle.setStop(id, ma.getEdgeIdEOA(), ma.getPositionEOA(), 0, Simulation.getEndTime());
-            lastEOAEdge = ma.getEdgeIdEOA();
-            lastEOAPos = ma.getPositionEOA();
+            lastEOA = ma;
         }
     }
 
@@ -109,8 +113,7 @@ public class Train implements IStepTrigger, IMessageUser {
     private double length;
 
     private SumoManager sumoManager;
-    private String lastEOAEdge = "";
-    private double lastEOAPos = -1;
+    private MovementAuthority lastEOA;
 
     private int positionReportInterval;
     private float delayInMean;
