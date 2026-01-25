@@ -44,6 +44,7 @@ public class Interlocking {
                 newTracks.removeLast();
                 realEndPosition = newTracks.getLast().getLength() - 0.1;
             }
+
             this.tracks = newTracks;
             updateStartPosition(startPosition);
             updateEndPosition(realEndPosition);

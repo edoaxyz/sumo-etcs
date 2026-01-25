@@ -2,18 +2,26 @@ package sumoetcs.interlocking;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.eclipse.sumo.libtraci.Edge;
 import org.eclipse.sumo.libtraci.Lane;
 
 public class Track {
-    protected Track(List<String> edges) {
+    protected Track(List<String> edges, List<List<String>> incomingConnections) {
         this.edges = new ArrayList<>(edges);
+        this.incomingConnections = new ArrayList<>();
+        this.incomingInternalEdges = new HashSet<>();
+        if (incomingConnections != null) this.incomingConnections.addAll(incomingConnections); 
+        for (var inConn: this.incomingConnections) {
+            this.incomingInternalEdges.addAll(inConn);
+        }
 
         int i = 0;
         for (var edge : edges) {
@@ -34,6 +42,10 @@ public class Track {
         return new ArrayList<>(edges);
     }
 
+    public List<String> getIncomingEdges() {
+        return new ArrayList<>(incomingInternalEdges);
+    }
+
     public double getLength() {
         return length;
     }
@@ -43,6 +55,7 @@ public class Track {
     }
 
     public double getEdgePosition(String edgeId, boolean end) {
+        if (this.incomingInternalEdges.contains(edgeId)) return 0;
         if (end) {
             int indexNextEdge = edgeIndexes.get(edgeId) + 1;
             if (edges.size() == indexNextEdge) {
@@ -58,6 +71,8 @@ public class Track {
     }
 
     private List<String> edges;
+    private List<List<String>> incomingConnections;
+    private Set<String> incomingInternalEdges;
     private Map<String, Integer> edgeIndexes = new HashMap<>();
     private Map<String, Double> lengths = new HashMap<>();
     private TreeMap<Double, String> orderedLengths = new TreeMap<>();

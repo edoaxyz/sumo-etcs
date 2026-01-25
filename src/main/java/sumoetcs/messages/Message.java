@@ -11,13 +11,16 @@ public abstract class Message implements IStepTrigger {
     }
 
     public void send(SumoManager sumoManager) {
-        this.delay = sender.generateDelay(this);
-        this.time = sumoManager.getCurrentTime();
-        sumoManager.stepSubscribeIn(this, this.delay, true);
+        if (sender.canSend(this)) {
+            this.delay = sender.generateDelay(this);
+            this.time = sumoManager.getCurrentTime();
+            sumoManager.stepSubscribeIn(this, this.delay, true);
+        }
     }
 
     public void nextStep(int currentTime) {
-        recipient.receive(this);
+        if (recipient.canReceive(this))
+            recipient.receive(this);
     }
 
     public IMessageUser getSender() {

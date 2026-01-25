@@ -30,6 +30,7 @@ public class Train implements IStepTrigger, IMessageUser {
         this.delayInStd = Float.parseFloat(VehicleType.getParameter(typeId, "delayInStd"));
         this.delayOutMean = Float.parseFloat(VehicleType.getParameter(typeId, "delayOutMean"));
         this.delayOutStd = Float.parseFloat(VehicleType.getParameter(typeId, "delayOutStd"));
+        this.retry = VehicleType.getParameter(typeId, "retry").equals("true");
 
         Vehicle.setSpeed(id, 0);
         this.sumoManager = sumoManager;
@@ -67,6 +68,17 @@ public class Train implements IStepTrigger, IMessageUser {
     public void nextStep(int currentTime) {
         sendPositionReport();
     }
+
+    @Override
+    public boolean canSend(Message message) {
+        if (!connected && retry) queue.add(message); 
+        return connected;
+    };
+
+    @Override
+    public boolean canReceive(Message message) {
+        return connected;
+    };
 
     public float getDelayInMean() {
         return delayInMean;
@@ -107,18 +119,28 @@ public class Train implements IStepTrigger, IMessageUser {
         m.send(sumoManager);
     }
 
+    private void setConnected(boolean connected) {
+        this.connected = connected;
+        while (this.connected && this.queue.size() > 0) {
+            this.queue.removeFirst().send(sumoManager);
+        }
+    }
+
     private String id;
     private String typeId;
     private RBC rbc;
     private double length;
 
     private SumoManager sumoManager;
-    private MovementAuthority lastEOA;
+    private MovementAuthority lastEOA = null;
+    private boolean connected = true;
+    private List<Message> queue = new LinkedList<>();
 
     private int positionReportInterval;
     private float delayInMean;
     private float delayInStd;
     private float delayOutMean;
     private float delayOutStd;
+    private boolean retry;
 
 }
