@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.eclipse.sumo.libtraci.Edge;
 import org.eclipse.sumo.libtraci.Lane;
@@ -18,8 +19,9 @@ public class Track {
         this.edges = new ArrayList<>(edges);
         this.incomingConnections = new ArrayList<>();
         this.incomingInternalEdges = new HashSet<>();
-        if (incomingConnections != null) this.incomingConnections.addAll(incomingConnections); 
-        for (var inConn: this.incomingConnections) {
+        if (incomingConnections != null)
+            this.incomingConnections.addAll(incomingConnections);
+        for (var inConn : this.incomingConnections) {
             this.incomingInternalEdges.addAll(inConn);
         }
 
@@ -35,7 +37,8 @@ public class Track {
 
         try {
             blockLength = Double.parseDouble(Edge.getParameter(edges.getFirst(), "block-length"));
-        } catch (NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+        }
     }
 
     public List<String> getEdges() {
@@ -55,7 +58,8 @@ public class Track {
     }
 
     public double getEdgePosition(String edgeId, boolean end) {
-        if (this.incomingInternalEdges.contains(edgeId)) return 0;
+        if (this.incomingInternalEdges.contains(edgeId))
+            return 0;
         if (end) {
             int indexNextEdge = edgeIndexes.get(edgeId) + 1;
             if (edges.size() == indexNextEdge) {
@@ -70,6 +74,24 @@ public class Track {
         return orderedLengths.floorEntry(positionInTrack).getValue();
     }
 
+    @Override
+    public String toString() {
+        return "[" + String.join(", ", edges) + "]";
+    };
+
+    protected void addOccupation(Occupation occ) {
+        occupations.add(occ);
+    }
+
+    protected void removeOccupation(Occupation occ) {
+        occupations.remove(occ);
+    }
+
+    protected Occupation findCeilingOccupation(Occupation occ) {
+        var ceil = occupations.ceiling(occ);
+        return ceil != occ ? ceil : null;
+    }
+
     private List<String> edges;
     private List<List<String>> incomingConnections;
     private Set<String> incomingInternalEdges;
@@ -78,4 +100,13 @@ public class Track {
     private TreeMap<Double, String> orderedLengths = new TreeMap<>();
     private double length = 0;
     private double blockLength = -1;
+
+    private TreeSet<Occupation> occupations = new TreeSet<>(
+            (occ1, occ2) -> {
+                int diff = (int) ((occ1.getSegment().getStartPositionInTrack(this)
+                        - occ2.getSegment().getStartPositionInTrack(this)) * 1000000.);
+                if (diff == 0)
+                    diff = occ1 == occ2 ? 0 : -1;
+                return diff;
+            });
 }

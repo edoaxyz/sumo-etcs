@@ -103,6 +103,22 @@ public class Net {
         return new HashMap<>(this.tracks);
     }
 
+    public Segment getSegmentFromEdges(double startPos, double endPos, List<String> edges) {
+        var tracks = new LinkedList<Track>();
+        double finalStart = 0, finalEnd = 0;
+        for (int i = 0; i < edges.size(); i++) {
+            var edge = edges.get(i);
+            var t = toTrack(edge, i == 0 ? startPos : 0);
+            if (i == 0) finalStart = t.getValue();
+            else if (i == edges.size() - 1) finalEnd = t.getValue();
+            if (tracks.size() == 0 || t.getKey() != tracks.getLast()) tracks.add(t.getKey());
+        }
+        finalEnd = endPos == -1 ? tracks.getLast().getLength() : finalEnd + endPos;
+        if (tracks.size() == 0)
+            return null;
+        return new Segment(finalStart, finalEnd, tracks);
+    }
+
     public Entry<Track, Double> toTrack(String edgeId, double positionInEdge) {
         Track t = tracks.get(edgeId);
         return Map.entry(t, t.getEdgePosition(edgeId, positionInEdge < 0) + positionInEdge);

@@ -23,7 +23,7 @@ public class Train implements IStepTrigger, IMessageUser {
         this.id = id;
         this.typeId = Vehicle.getTypeID(id);
         this.rbc = rbc;
-        this.length = Vehicle.getLength(id);
+        this.length = Vehicle.getLength(id) + Vehicle.getMinGap(id);
 
         this.positionReportInterval = Integer.parseInt(VehicleType.getParameter(typeId, "positionReportInterval"));
         this.delayInMean = Float.parseFloat(VehicleType.getParameter(typeId, "delayInMean"));
@@ -80,6 +80,11 @@ public class Train implements IStepTrigger, IMessageUser {
         return connected;
     };
 
+    @Override
+    public String toString() {
+        return id;
+    };
+
     public float getDelayInMean() {
         return delayInMean;
     }
@@ -106,16 +111,14 @@ public class Train implements IStepTrigger, IMessageUser {
         double frontPos = Vehicle.getLaneID(id).startsWith(":") ? Lane.getLength(route.get(index) + "_0")
                 : Vehicle.getLanePosition(id);
         double endPos = frontPos - Vehicle.getLength(id);
-        List<String> nextEdges = route.subList(index, route.size());
-        List<String> occupiedEdges = new LinkedList<>(List.of(route.get(index)));
+        int startIndex = index;
         while (endPos < 0) {
             // Vehicle is not entirely on the edge, so we'll get the back one
-            var edgeId = route.get(index - 1);
-            occupiedEdges.add(0, edgeId);
+            var edgeId = route.get(startIndex - 1);
             endPos = Lane.getLength(edgeId + "_0") + endPos;
-            index--;
+            startIndex--;
         }
-        Message m = new PositionReport(this, this.rbc, endPos, frontPos, occupiedEdges, nextEdges);
+        Message m = new PositionReport(this, this.rbc, endPos, frontPos, route.subList(startIndex, index+1), route.subList(startIndex, route.size()));
         m.send(sumoManager);
     }
 
@@ -142,5 +145,4 @@ public class Train implements IStepTrigger, IMessageUser {
     private float delayOutMean;
     private float delayOutStd;
     private boolean retry;
-
 }

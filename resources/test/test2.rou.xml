@@ -5,7 +5,7 @@
 
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
     <!-- VTypes -->
-    <vType id="t_0" vClass="rail">
+    <vType id="t_0" vClass="rail" minGap="0">
         <param key="delayInMean" value="64"/>
         <param key="delayInStd" value="0"/>
         <param key="delayOutMean" value="64"/>

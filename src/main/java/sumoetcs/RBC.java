@@ -14,6 +14,8 @@ import org.eclipse.sumo.libtraci.Vehicle;
 
 import sumoetcs.interlocking.Interlocking;
 import sumoetcs.interlocking.Net;
+import sumoetcs.interlocking.Occupation;
+import sumoetcs.interlocking.Segment;
 import sumoetcs.interlocking.Track;
 import sumoetcs.messages.IMessageUser;
 import sumoetcs.messages.Message;
@@ -31,9 +33,7 @@ public class RBC implements IStepTrigger, IMessageUser {
         this.sumoManager.stepSubscribe(this, false);
 
         this.net = new Net();
-        this.interlocking = new Interlocking(net);
         this.net.load();
-        this.interlocking.load();
     }
 
     @Override
@@ -46,32 +46,18 @@ public class RBC implements IStepTrigger, IMessageUser {
         if (message instanceof PositionReport) {
             PositionReport prMess = (PositionReport) message;
             if (!trains.containsKey(prMess.getTrain().getId())) return;
-            Interlocking.Occupation occ = interlocking.getOccupation(prMess.getTrain());
-            double startPos = 0, endPos = 0;
-            var tracks = new LinkedList<Track>();
-            var nextEdges = new LinkedList<String>(prMess.getNextEdges());
-            for (var edge : prMess.getOccupiedEdges()) {
-                var t = net.toTrack(edge, prMess.getOccupiedEdges().getFirst().equals(edge) ? prMess.getBackPosition() : 0);
-                if (prMess.getOccupiedEdges().getFirst().equals(edge)) startPos = t.getValue();
-                if (tracks.size() == 0 || t.getKey() != tracks.getLast()) tracks.add(t.getKey());
-                if (prMess.getOccupiedEdges().getLast().equals(edge)) endPos = t.getValue() + prMess.getFrontPosition();
-                if (nextEdges.getFirst().equals(edge)) nextEdges.removeFirst();
-            }
+            Occupation occ = occupations.get(prMess.getTrain());
+            Segment nextSegment = this.net.getSegmentFromEdges(prMess.getBackPosition(), -1, prMess.getNextEdges());
             if (occ == null) {
-                occ = interlocking.createOccupation(prMess.getTrain(), tracks, startPos, endPos);
+                occ = new Occupation(prMess.getTrain(), nextSegment);
+                occupations.put(prMess.getTrain(), occ);
+            } else {
+                occ.requestNextSegment(nextSegment);
             }
-            for (var edge: nextEdges) {
-                var t = net.toTrack(edge, -1);
-                if (tracks.size() == 0 || tracks.getLast() != t.getKey()) {
-                    tracks.add(t.getKey());
-                }
-                endPos = t.getValue();
-            }
-            occ.requestNextEOA(tracks, startPos, endPos);
 
             // TODO: add startEdge to MA?
-            var startEdge = net.toEdge(occ.getFirstTrack(), occ.getStartPositionInTrack(occ.getFirstTrack()));
-            var endEdge = net.toEdge(occ.getLastTrack(), occ.getEndPositionInTrack(occ.getLastTrack()));
+            // var startEdge = net.toEdge(occ.getSegment(), occ.getStartPositionInTrack(occ.getFirstTrack()));
+            var endEdge = net.toEdge(occ.getSegment().getLastTrack(), occ.getSegment().getEndPosition());
             MovementAuthority maMessage = new MovementAuthority(this, prMess.getTrain(), endEdge.getKey(), endEdge.getValue());
             maMessage.send(sumoManager);
         }
@@ -99,14 +85,13 @@ public class RBC implements IStepTrigger, IMessageUser {
         for (var idToRemove : ids) {
             Train t = trains.remove(idToRemove);
             t.free();
-            Interlocking.Occupation occ = interlocking.getOccupation(t);
-            if (occ != null)
-                occ.free();
+            if (occupations.containsKey(t))
+                occupations.remove(t).free();
         }
     }
 
     private Map<String, Train> trains = new HashMap<>();
+    private Map<Train, Occupation> occupations = new HashMap<>();
     private SumoManager sumoManager;
     private Net net;
-    private Interlocking interlocking;
 }

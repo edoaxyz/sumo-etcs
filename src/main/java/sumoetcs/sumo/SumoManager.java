@@ -68,7 +68,7 @@ public class SumoManager {
 
     public SumoManager(String configPath) {
         Simulation.preloadLibraries();
-        Simulation.start(new StringVector(new String[] { "sumo-gui", "-c", configPath, "--start"}));
+        Simulation.start(new StringVector(new String[] { "sumo-gui", "-c", configPath, "--start", "--time-to-teleport", "-1"}));
         currentTime = (int) Simulation.getTime() * 1000;
     }
 
