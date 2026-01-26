@@ -110,7 +110,7 @@ public class SumoManager {
         stepTriggers.remove(new TriggerInfo(o, currentTime, false));
     }
 
-    public int getCurrentTime() {
+    public Integer getCurrentTime() {
         return currentTime;
     }
 

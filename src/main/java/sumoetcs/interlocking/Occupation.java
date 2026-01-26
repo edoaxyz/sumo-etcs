@@ -1,7 +1,9 @@
 package sumoetcs.interlocking;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 import sumoetcs.Train;
 
@@ -12,8 +14,13 @@ public class Occupation {
         requestNextSegment(currentSegment);
     }
 
+    public void requestNextSegment() {
+        requestNextSegment(null);
+    }
+
     public void requestNextSegment(Segment segment) {
-        this.desiredSegment = segment;
+        if (segment == null) segment = this.desiredSegment;
+        else this.desiredSegment = segment;
         // First remove my occupations
         var newTracks = new LinkedList<Track>();
         for (var track: this.currentSegment.getTracks()) {
@@ -34,10 +41,13 @@ public class Occupation {
             realEndPosition = newTracks.getLast().getLength() - 0.01;
         }
         var newSegment = new Segment(segment.getStartPosition(), realEndPosition, newTracks);
+        boolean isTailDiff = !newSegment.tailEquals(this.currentSegment);
         this.currentSegment = newSegment;
         for (var newTrack : this.currentSegment.getTracks()) {
             newTrack.addOccupation(this);
         }
+        if (isTailDiff) updateTailObservers();
+        if (nextOccupation != null) nextOccupation.tailObservers.add(this);
     }
 
     public void free() {
@@ -55,7 +65,17 @@ public class Occupation {
         return train.getId();
     };
 
+    private void updateTailObservers() {
+        var obs = new LinkedList<>(tailObservers);
+        while (obs.size() > 0) {
+            Train t = obs.removeFirst().train;
+            t.getRbc().sendMovementAuthority(t);
+        }
+    }
+
     private Train train;
     private Segment currentSegment;
     private Segment desiredSegment;
+
+    private LinkedHashSet<Occupation> tailObservers = new LinkedHashSet<>();
 }

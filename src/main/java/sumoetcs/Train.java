@@ -101,6 +101,10 @@ public class Train implements IStepTrigger, IMessageUser {
         return id;
     }
 
+    public RBC getRbc() {
+        return rbc;
+    }
+
     public void free() {
         sumoManager.stepUnsubscribe(this);
     }
@@ -120,6 +124,7 @@ public class Train implements IStepTrigger, IMessageUser {
         }
         Message m = new PositionReport(this, this.rbc, endPos, frontPos, route.subList(startIndex, index+1), route.subList(startIndex, route.size()));
         m.send(sumoManager);
+        Vehicle.setParameter(id, "lastPR", sumoManager.getCurrentTime().toString());
     }
 
     private void setConnected(boolean connected) {

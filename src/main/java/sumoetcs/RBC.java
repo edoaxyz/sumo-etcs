@@ -12,11 +12,9 @@ import java.util.Set;
 import org.eclipse.sumo.libtraci.Simulation;
 import org.eclipse.sumo.libtraci.Vehicle;
 
-import sumoetcs.interlocking.Interlocking;
 import sumoetcs.interlocking.Net;
 import sumoetcs.interlocking.Occupation;
 import sumoetcs.interlocking.Segment;
-import sumoetcs.interlocking.Track;
 import sumoetcs.messages.IMessageUser;
 import sumoetcs.messages.Message;
 import sumoetcs.messages.MovementAuthority;
@@ -46,20 +44,8 @@ public class RBC implements IStepTrigger, IMessageUser {
         if (message instanceof PositionReport) {
             PositionReport prMess = (PositionReport) message;
             if (!trains.containsKey(prMess.getTrain().getId())) return;
-            Occupation occ = occupations.get(prMess.getTrain());
             Segment nextSegment = this.net.getSegmentFromEdges(prMess.getBackPosition(), -1, prMess.getNextEdges());
-            if (occ == null) {
-                occ = new Occupation(prMess.getTrain(), nextSegment);
-                occupations.put(prMess.getTrain(), occ);
-            } else {
-                occ.requestNextSegment(nextSegment);
-            }
-
-            // TODO: add startEdge to MA?
-            // var startEdge = net.toEdge(occ.getSegment(), occ.getStartPositionInTrack(occ.getFirstTrack()));
-            var endEdge = net.toEdge(occ.getSegment().getLastTrack(), occ.getSegment().getEndPosition());
-            MovementAuthority maMessage = new MovementAuthority(this, prMess.getTrain(), endEdge.getKey(), endEdge.getValue());
-            maMessage.send(sumoManager);
+            sendMovementAuthority(prMess.getTrain(), nextSegment);
         }
     }
 
@@ -70,6 +56,27 @@ public class RBC implements IStepTrigger, IMessageUser {
             return (int) new Random().nextGaussian(t.getDelayInMean(), t.getDelayInStd());
         }
         return 0;
+    }
+
+    public void sendMovementAuthority(Train train) {
+        sendMovementAuthority(train, null);
+    }
+
+    public void sendMovementAuthority(Train train, Segment segment) {
+        if (!trains.containsKey(train.getId())) return;
+        Occupation occ = occupations.get(train);
+        if (occ == null) {
+            occ = new Occupation(train, segment);
+            occupations.put(train, occ);
+        } else {
+            occ.requestNextSegment(segment);
+        }
+
+        // TODO: add startEdge to MA?
+        // var startEdge = net.toEdge(occ.getSegment(), occ.getStartPositionInTrack(occ.getFirstTrack()));
+        var endEdge = net.toEdge(occ.getSegment().getLastTrack(), occ.getSegment().getEndPosition());
+        MovementAuthority maMessage = new MovementAuthority(this, train, endEdge.getKey(), endEdge.getValue());
+        maMessage.send(sumoManager);
     }
 
     private void refreshTrains() {

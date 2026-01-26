@@ -88,6 +88,14 @@ public class Segment {
         return new Segment(startPos, longest.endPos, tracks);
     }
 
+    public boolean tailEquals(Segment s) {
+        return tracks.getFirst().equals(s.tracks.getFirst()) && Math.abs(s.startPos - startPos)*1000000 < 1.;
+    }
+
+    public boolean headEquals(Segment s) {
+        return tracks.getLast().equals(s.tracks.getLast()) && Math.abs(s.endPos - endPos)*1000000 < 1.;
+    }
+
     public double getStartPositionInTrack(Track track) {
         if (track == tracks.getFirst())
             return startPos;
@@ -119,22 +127,6 @@ public class Segment {
     public double getEndPosition() {
         return endPos;
     }
-
-    /*
-     * protected void updateStartPosition(double position) {
-     * Track t = tracks.getFirst();
-     * this.startPos = t.getBlockLength() > 0 ? Math.floor(position /
-     * t.getBlockLength()) * t.getBlockLength()
-     * : position;
-     * }
-     * 
-     * protected void updateEndPosition(double position) {
-     * Track t = tracks.getFirst();
-     * this.endPos = t.getBlockLength() > 0 ? Math.ceil(position /
-     * t.getBlockLength()) * t.getBlockLength()
-     * : position;
-     * }
-     */
 
     private Double startPos;
     private Double endPos;
