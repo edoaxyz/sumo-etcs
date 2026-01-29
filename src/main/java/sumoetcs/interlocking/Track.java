@@ -3,16 +3,16 @@ package sumoetcs.interlocking;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.eclipse.sumo.libtraci.Edge;
 import org.eclipse.sumo.libtraci.Lane;
+
+import sumoetcs.Consts;
 
 public class Track {
     protected Track(List<String> edges, List<List<String>> incomingConnections) {
@@ -104,7 +104,7 @@ public class Track {
     private TreeSet<Occupation> occupations = new TreeSet<>(
             (occ1, occ2) -> {
                 int diff = (int) ((occ1.getSegment().getStartPositionInTrack(this)
-                        - occ2.getSegment().getStartPositionInTrack(this)) * 1000000.);
+                        - occ2.getSegment().getStartPositionInTrack(this)) / Consts.FLOAT_THRESHOLD);
                 if (diff == 0)
                     diff = occ1 == occ2 ? 0 : -1;
                 return diff;

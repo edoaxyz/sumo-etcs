@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sumoetcs.Consts;
+
 public class Segment {
     public Segment(Double startPosition, Double endPosition, List<Track> tracks) {
         Track t = tracks.getFirst();
@@ -89,11 +91,11 @@ public class Segment {
     }
 
     public boolean tailEquals(Segment s) {
-        return tracks.getFirst().equals(s.tracks.getFirst()) && Math.abs(s.startPos - startPos)*1000000 < 1.;
+        return tracks.getFirst().equals(s.tracks.getFirst()) && Math.abs(s.startPos - startPos) < Consts.FLOAT_THRESHOLD;
     }
 
     public boolean headEquals(Segment s) {
-        return tracks.getLast().equals(s.tracks.getLast()) && Math.abs(s.endPos - endPos)*1000000 < 1.;
+        return tracks.getLast().equals(s.tracks.getLast()) && Math.abs(s.endPos - endPos) < Consts.FLOAT_THRESHOLD;
     }
 
     public double getStartPositionInTrack(Track track) {

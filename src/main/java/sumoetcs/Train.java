@@ -23,16 +23,18 @@ public class Train implements IStepTrigger, IMessageUser {
         this.id = id;
         this.typeId = Vehicle.getTypeID(id);
         this.rbc = rbc;
-        this.length = Vehicle.getLength(id) + Vehicle.getMinGap(id);
 
         this.positionReportInterval = Integer.parseInt(VehicleType.getParameter(typeId, "positionReportInterval"));
         this.delayInMean = Float.parseFloat(VehicleType.getParameter(typeId, "delayInMean"));
         this.delayInStd = Float.parseFloat(VehicleType.getParameter(typeId, "delayInStd"));
         this.delayOutMean = Float.parseFloat(VehicleType.getParameter(typeId, "delayOutMean"));
         this.delayOutStd = Float.parseFloat(VehicleType.getParameter(typeId, "delayOutStd"));
+        this.safetyMargin = Float.parseFloat(VehicleType.getParameter(typeId, "safetyMargin"));
         this.retry = VehicleType.getParameter(typeId, "retry").equals("true");
 
+        this.length = Vehicle.getLength(id) + this.safetyMargin;
         Vehicle.setSpeed(id, 0);
+        Vehicle.setMinGap(id, 0);
         this.sumoManager = sumoManager;
         sumoManager.stepSubscribe(this, true);
         sumoManager.stepSubscribeIn(this, positionReportInterval, false);
@@ -150,4 +152,5 @@ public class Train implements IStepTrigger, IMessageUser {
     private float delayOutMean;
     private float delayOutStd;
     private boolean retry;
+    private float safetyMargin;
 }

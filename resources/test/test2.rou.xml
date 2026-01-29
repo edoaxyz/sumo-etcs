@@ -10,6 +10,7 @@
         <param key="delayInStd" value="0"/>
         <param key="delayOutMean" value="64"/>
         <param key="delayOutStd" value="0"/>
+        <param key="safetyMargin" value="1000"/>
         <param key="positionReportInterval" value="5000"/>
     </vType>
     <!-- Vehicles, persons and containers (sorted by depart) -->
