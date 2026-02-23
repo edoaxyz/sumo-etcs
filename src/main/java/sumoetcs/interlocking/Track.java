@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import org.eclipse.sumo.libtraci.Edge;
 import org.eclipse.sumo.libtraci.Lane;
+import org.eclipse.sumo.libtraci.Simulation;
 
 import sumoetcs.Consts;
 

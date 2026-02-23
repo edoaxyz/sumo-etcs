@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edges>
+  <edge id="0" from="0_0+0" to="2_2+0" allow="rail" length="1.0" numLanes="1" speed="8.333333333333334">
+    <param key="block-length" value="-1"/>
+  </edge>
+  <edge id="1" from="0_0+1" to="2_2+1" allow="rail" length="1.0" numLanes="1" speed="8.333333333333334">
+    <param key="block-length" value="-1"/>
+  </edge>
+  <edge id="2" from="2_2+0" to="3_2+0" allow="rail" length="249.0" numLanes="1" speed="8.333333333333334">
+    <param key="block-length" value="-1"/>
+  </edge>
+  <edge id="3" from="2_2+1" to="3_2+1" allow="rail" length="249.0" numLanes="1" speed="8.333333333333334">
+    <param key="block-length" value="-1"/>
+  </edge>
+  <edge id="4" from="3_2+0" to="4_2" allow="rail" length="50.0" numLanes="1" speed="83.33333333333333">
+    <param key="block-length" value="-1"/>
+  </edge>
+  <edge id="5" from="3_2+1" to="4_2" allow="rail" length="50.0" numLanes="1" speed="83.33333333333333">
+    <param key="block-length" value="-1"/>
+  </edge>
+  <edge id="6" from="4_2" to="5_2" allow="rail" length="700.0" numLanes="1" speed="83.33333333333333">
+    <param key="block-length" value="-1"/>
+  </edge>
+  <edge id="7" from="5_2" to="6_2" allow="rail" length="248700.0" numLanes="1" speed="83.33333333333333">
+    <param key="block-length" value="-1"/>
+  </edge>
+  <edge id="8" from="6_2" to="7_2+0" allow="rail" length="50.0" numLanes="1" speed="83.33333333333333">
+    <param key="block-length" value="-1"/>
+  </edge>
+  <edge id="9" from="6_2" to="7_2+1" allow="rail" length="50.0" numLanes="1" speed="83.33333333333333">
+    <param key="block-length" value="-1"/>
+  </edge>
+  <edge id="10" from="7_2+0" to="8_2+0" allow="rail" length="250.0" numLanes="1" speed="8.333333333333334">
+    <param key="block-length" value="-1"/>
+  </edge>
+  <edge id="11" from="7_2+1" to="8_2+1" allow="rail" length="250.0" numLanes="1" speed="8.333333333333334">
+    <param key="block-length" value="-1"/>
+  </edge>
+</edges>

@@ -1,5 +1,6 @@
 package sumoetcs.sumo;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -66,14 +67,14 @@ public class SumoManager {
     public static final Set<String> ALLOWED_CLASSES = new HashSet<>(
             Arrays.asList("rail", "rail_fast", "rail_urban", "rail_electric"));
 
-    public SumoManager(String configPath) {
+    public SumoManager(String configPath, String outputPath) {
         Simulation.preloadLibraries();
-        Simulation.start(new StringVector(new String[] { "sumo-gui", "-c", configPath, "--start", "--time-to-teleport", "-1"}));
-        currentTime = (int) Simulation.getTime() * 1000;
+        Simulation.start(new StringVector(new String[] { "sumo-gui", "-c", configPath, "--start", "--time-to-teleport", "-1", "--railsignal-moving-block", "--fcd-output", outputPath }));
+        currentTime = (int) (Simulation.getTime() * 1000.);
+        endTime = (int) (Simulation.getEndTime() * 1000.);
     }
 
     public void runAll() {
-        var endTime = Simulation.getEndTime() * 1000;
         while (currentTime < endTime) {
             nextStep();
         }
@@ -83,7 +84,7 @@ public class SumoManager {
         Simulation.step();
         currentTime = (int) (Simulation.getTime() * 1000);
         List<TriggerInfo> toReAdd = new LinkedList<>();
-        while (stepTriggers.peek().trigger() == true) {
+        while (!stepTriggers.isEmpty() && stepTriggers.peek().trigger() == true) {
             TriggerInfo trigger = stepTriggers.poll().getNext();
             if (trigger != null)
                 toReAdd.add(trigger);
@@ -114,6 +115,11 @@ public class SumoManager {
         return currentTime;
     }
 
+    public Integer getEndTime() {
+        return endTime;
+    }
+
     private int currentTime = 0;
+    private int endTime;
     private PriorityQueue<TriggerInfo> stepTriggers = new PriorityQueue<>();
 }

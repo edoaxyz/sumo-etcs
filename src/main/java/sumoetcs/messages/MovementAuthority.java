@@ -11,6 +11,10 @@ public class MovementAuthority extends Message {
         this.positionEOA = positionEOA;
     }
 
+    public boolean equalsPosition(MovementAuthority ma) {
+        return ma != null && edgeIdEOA == ma.edgeIdEOA && positionEOA == ma.positionEOA;
+    }
+
     public String getEdgeIdEOA() {
         return edgeIdEOA;
     }

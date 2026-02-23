@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+  <node x="0" y="0" z="0" type="rail_signal" id="0_0+0"/>
+  <node x="0" y="100" z="0" type="rail_signal" id="0_0+1"/>
+  <node x="1.0" y="0" z="0.0" type="rail_signal" id="2_2+0"/>
+  <node x="1.0" y="100" z="0.0" type="rail_signal" id="2_2+1"/>
+  <node x="250.0" y="0" z="0.0" type="rail_signal" id="3_2+0"/>
+  <node x="250.0" y="100" z="0.0" type="rail_signal" id="3_2+1"/>
+  <node x="300.0" y="0" z="0.0" type="rail_signal" id="4_2"/>
+  <node x="1000.0" y="0" z="0.0" type="rail_signal" id="5_2"/>
+  <node x="249700.0" y="0" z="0.0" type="rail_signal" id="6_2"/>
+  <node x="249750.0" y="0" z="0.0" type="rail_signal" id="7_2+0"/>
+  <node x="249750.0" y="100" z="0.0" type="rail_signal" id="7_2+1"/>
+  <node x="250000.0" y="0" z="0.0" type="rail_signal" id="8_2+0"/>
+  <node x="250000.0" y="100" z="0.0" type="rail_signal" id="8_2+1"/>
+</nodes>

@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<additional>
+  <tlLogic id="3_1+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="3_1+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="4_1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="5_1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="5_2" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="5_3" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="5_4" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="5_5" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="6_5" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="7_5+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="7_5+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="8_5+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="8_5+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="8_6+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="8_6+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="8_7+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="8_7+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="9_7+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="9_7+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="9_8+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="9_8+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="10_8" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="10_9" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="10_10" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="10_11" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="11_11" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="11_12" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="11_13" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="11_14" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="11_15" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="12_15" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="13_15+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="13_15+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="13_16+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="13_16+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="14_16+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="14_16+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="14_18+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="14_18+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="15_18+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="15_18+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="16_18" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="16_19" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="17_19" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="17_21" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="17_22" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="17_23" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="17_24" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="18_24" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="19_24+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="19_24+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="19_25+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="19_25+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="20_25+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="20_25+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="20_26+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="20_26+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="21_26+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="21_26+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="22_26" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="22_27" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="22_28" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="22_29" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="23_29" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="24_29+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="24_29+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="24_30+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="24_30+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="25_30+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="25_30+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="26_30+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="26_30+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="26_31+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="26_31+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="27_31" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="27_32" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="27_33" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="27_34" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="27_35" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="28_35" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="28_36" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="29_36+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="29_36+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="29_37+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="29_37+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="30_37+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="30_37+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="30_38+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="30_38+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="31_38+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="31_38+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="32_38" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="32_39" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="32_40" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="33_40" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="33_41" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="34_41+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="34_41+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="35_41+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="35_41+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="35_42+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="35_42+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="36_42+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="36_42+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="37_42" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="37_43" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="37_44" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="38_44" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="38_45" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="39_45+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="39_45+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="40_45+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="40_45+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="40_46+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="40_46+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="41_46+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="41_46+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="42_46" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="42_47" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="42_48" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="43_48" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="44_48+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="44_48+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="45_48+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="45_48+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="45_49+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="45_49+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="46_49+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="46_49+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="47_49" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="47_50" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="47_51" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="48_51" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="49_51+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="49_51+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="49_52+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="49_52+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="50_52+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="50_52+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="50_53+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="50_53+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="51_53+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="51_53+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="52_53" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="52_54" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="52_55" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="52_56" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="52_57" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="52_58" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="53_58" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="54_58+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="54_58+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="54_59+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="54_59+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="55_59+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="55_59+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="55_60+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="55_60+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="56_60+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="56_60+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="56_61+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="56_61+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="57_61" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="57_62" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="57_63" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="57_64" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="57_65" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="58_65" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="58_66" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="59_66+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="59_66+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="59_67+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="59_67+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="60_67+0" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <tlLogic id="60_67+1" programID="0">
+    <param key="moving-block" value="true"/>
+  </tlLogic>
+  <trainStop id="0+0" name="out Cadorna" lane="0_0" startPos="0" endPos="1"/>
+  <trainStop id="0+1" name="out Cadorna" lane="1_0" startPos="0" endPos="1"/>
+  <trainStop id="1+0" name="Domodossola" lane="12_0" startPos="-5"/>
+  <trainStop id="1+1" name="Domodossola" lane="13_0" startPos="-5"/>
+  <trainStop id="2+0" name="Bovisa" lane="37_0" startPos="-5"/>
+  <trainStop id="2+1" name="Bovisa" lane="38_0" startPos="-5"/>
+  <trainStop id="3+0" name="Affori" lane="56_0" startPos="-5"/>
+  <trainStop id="3+1" name="Affori" lane="57_0" startPos="-5"/>
+  <trainStop id="4+0" name="Bruzzano" lane="72_0" startPos="-5"/>
+  <trainStop id="4+1" name="Bruzzano" lane="73_0" startPos="-5"/>
+  <trainStop id="5+0" name="Cormano" lane="90_0" startPos="-5"/>
+  <trainStop id="5+1" name="Cormano" lane="91_0" startPos="-5"/>
+  <trainStop id="6+0" name="Paderno" lane="104_0" startPos="-5"/>
+  <trainStop id="6+1" name="Paderno" lane="105_0" startPos="-5"/>
+  <trainStop id="7+0" name="Palazzolo" lane="118_0" startPos="-5"/>
+  <trainStop id="7+1" name="Palazzolo" lane="119_0" startPos="-5"/>
+  <trainStop id="8+0" name="Varedo" lane="131_0" startPos="-5"/>
+  <trainStop id="8+1" name="Varedo" lane="132_0" startPos="-5"/>
+  <trainStop id="9+0" name="Bovisio" lane="146_0" startPos="-5"/>
+  <trainStop id="9+1" name="Bovisio" lane="147_0" startPos="-5"/>
+  <trainStop id="10+0" name="Cesano" lane="164_0" startPos="-5"/>
+  <trainStop id="10+1" name="Cesano" lane="165_0" startPos="-5"/>
+  <trainStop id="11+0" name="Seveso" lane="184_0" startPos="-5"/>
+  <trainStop id="11+1" name="Seveso" lane="185_0" startPos="-5"/>
+</additional>
