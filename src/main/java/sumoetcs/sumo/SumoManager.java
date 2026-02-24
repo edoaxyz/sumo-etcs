@@ -1,6 +1,5 @@
 package sumoetcs.sumo;
 
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -8,8 +7,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import org.eclipse.sumo.libtraci.Simulation;
-import org.eclipse.sumo.libtraci.StringVector;
+import org.eclipse.sumo.libsumo.Simulation;
+import org.eclipse.sumo.libsumo.StringVector;
 
 public class SumoManager {
     private class TriggerInfo implements Comparable<TriggerInfo> {
@@ -69,7 +68,8 @@ public class SumoManager {
 
     public SumoManager(String configPath, String outputPath) {
         Simulation.preloadLibraries();
-        Simulation.start(new StringVector(new String[] { "sumo-gui", "-c", configPath, "--start", "--time-to-teleport", "-1", "--railsignal-moving-block", "--fcd-output", outputPath }));
+        Simulation.start(new StringVector(new String[] { "sumo", "-X", "never", "-c", configPath, "--start",
+                "--time-to-teleport", "-1", "--railsignal-moving-block", "--fcd-output", outputPath }));
         currentTime = (int) (Simulation.getTime() * 1000.);
         endTime = (int) (Simulation.getEndTime() * 1000.);
     }

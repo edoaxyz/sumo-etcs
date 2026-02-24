@@ -1,6 +1,6 @@
-sumoetcs/RBC.class
-sumoetcs/messages/Message.class
-sumoetcs/sumo/SumoManager.class
-sumoetcs/sumo/SumoManager$TriggerInfo.class
+sumoetcs/connection/HandoverConnection$1.class
 sumoetcs/sumo/IStepTrigger.class
-sumoetcs/messages/IMessageUser.class
+sumoetcs/Consts.class
+sumoetcs/connection/LostConnection$1.class
+sumoetcs/connection/IConnectionObserver.class
+sumoetcs/connection/BurstedConnection$1.class

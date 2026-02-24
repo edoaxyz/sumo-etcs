@@ -1,6 +1,6 @@
 package sumoetcs.connection;
 
-import org.eclipse.sumo.libtraci.POI;
+import org.eclipse.sumo.libsumo.POI;
 
 import com.github.davidmoten.rtree2.RTree;
 import com.github.davidmoten.rtree2.geometry.Geometries;

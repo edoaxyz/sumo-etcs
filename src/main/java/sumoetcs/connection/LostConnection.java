@@ -1,8 +1,6 @@
 package sumoetcs.connection;
 
 import java.math.BigDecimal;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.oristool.analyzer.log.AnalysisLogger;
 import org.oristool.models.pn.PetriStateFeature;

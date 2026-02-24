@@ -3,7 +3,7 @@ package sumoetcs.connection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.sumo.libtraci.VehicleType;
+import org.eclipse.sumo.libsumo.VehicleType;
 
 public abstract class Connection {
     public Connection(String sumoTypeId) {

@@ -6,11 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import org.eclipse.sumo.libtraci.Lane;
-import org.eclipse.sumo.libtraci.Simulation;
-import org.eclipse.sumo.libtraci.StringVector;
-import org.eclipse.sumo.libtraci.Vehicle;
-import org.eclipse.sumo.libtraci.VehicleType;
+import org.eclipse.sumo.libsumo.Lane;
+import org.eclipse.sumo.libsumo.Simulation;
+import org.eclipse.sumo.libsumo.StringVector;
+import org.eclipse.sumo.libsumo.Vehicle;
+import org.eclipse.sumo.libsumo.VehicleType;
 
 import sumoetcs.connection.BurstedConnection;
 import sumoetcs.connection.Connection;

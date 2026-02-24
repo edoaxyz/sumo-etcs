@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.sumo.libtraci.Edge;
-import org.eclipse.sumo.libtraci.Lane;
+import org.eclipse.sumo.libsumo.Edge;
+import org.eclipse.sumo.libsumo.Lane;
 
 import sumoetcs.sumo.SumoManager;
 

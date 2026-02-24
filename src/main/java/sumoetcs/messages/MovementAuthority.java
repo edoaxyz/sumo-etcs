@@ -1,7 +1,5 @@
 package sumoetcs.messages;
 
-import java.util.List;
-
 import sumoetcs.Train;
 
 public class MovementAuthority extends Message {

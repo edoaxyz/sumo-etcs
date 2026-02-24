@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.sumo</groupId>
-            <artifactId>libtraci</artifactId>
+            <artifactId>libsumo</artifactId>
             <version>1.25.0</version>
         </dependency>
         <dependency>

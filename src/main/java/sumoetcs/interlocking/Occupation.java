@@ -1,9 +1,7 @@
 package sumoetcs.interlocking;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.Set;
 
 import sumoetcs.Train;
 

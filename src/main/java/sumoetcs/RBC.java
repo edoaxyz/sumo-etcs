@@ -3,14 +3,11 @@ package sumoetcs;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import org.eclipse.sumo.libtraci.Simulation;
-import org.eclipse.sumo.libtraci.Vehicle;
+import org.eclipse.sumo.libsumo.Vehicle;
 
 import sumoetcs.interlocking.Net;
 import sumoetcs.interlocking.Occupation;

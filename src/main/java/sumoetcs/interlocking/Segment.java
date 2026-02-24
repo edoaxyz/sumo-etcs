@@ -13,7 +13,7 @@ public class Segment {
         this.startPos = t.getBlockLength() > 0 ? Math.floor(startPosition / t.getBlockLength()) * t.getBlockLength()
                 : startPosition;
         this.endPos = Double.isFinite(endPosition) ? Math.min(t.getBlockLength() > 0 ? Math.ceil(endPosition / t.getBlockLength()) * t.getBlockLength()
-                : endPosition, tracks.getLast().getLength()) : endPosition;
+                : endPosition, tracks.getLast().getLength() - 10e-6) : endPosition;
         this.tracks = new ArrayList<>(tracks);
         for (int i = 0; i < this.tracks.size(); i++) {
             trackIndexes.put(this.tracks.get(i), i);

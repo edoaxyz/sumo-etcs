@@ -9,9 +9,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.eclipse.sumo.libtraci.Edge;
-import org.eclipse.sumo.libtraci.Lane;
-import org.eclipse.sumo.libtraci.Simulation;
+import org.eclipse.sumo.libsumo.Edge;
+import org.eclipse.sumo.libsumo.Lane;
 
 import sumoetcs.Consts;
 
