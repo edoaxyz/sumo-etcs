@@ -1,7 +1,7 @@
 package sumoetcs.connection;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.sumo.libsumo.VehicleType;
 
@@ -12,6 +12,10 @@ public abstract class Connection {
 
     public void addObserver(IConnectionObserver observer) {
         observers.add(observer);
+    }
+
+    public void removeObserver(IConnectionObserver observer) {
+        observers.remove(observer);
     }
 
     public String getSumoTypeId() {
@@ -36,5 +40,5 @@ public abstract class Connection {
     }
 
     private String sumoTypeId;
-    private List<IConnectionObserver> observers = new LinkedList<>();
+    private Set<IConnectionObserver> observers = new HashSet<>();
 }

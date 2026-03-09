@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.eclipse.sumo.libsumo.Simulation;
 import org.eclipse.sumo.libsumo.StringVector;
+import org.eclipse.sumo.libsumo.Vehicle;
 
 public class SumoManager {
     private class TriggerInfo implements Comparable<TriggerInfo> {
@@ -68,16 +69,18 @@ public class SumoManager {
 
     public SumoManager(String configPath, String outputPath) {
         Simulation.preloadLibraries();
-        Simulation.start(new StringVector(new String[] { "sumo", "-X", "never", "-c", configPath, "--start",
-                "--time-to-teleport", "-1", "--railsignal-moving-block", "--fcd-output", outputPath }));
+        Simulation.start(new StringVector(new String[] { "sumo", "-c", configPath, "--start",
+                "--time-to-teleport", "-1", "--railsignal-moving-block", "--fcd-output", outputPath,
+                "--fcd-output.distance", "--fcd-output.params", "dyn_lastEOA"}));
         currentTime = (int) (Simulation.getTime() * 1000.);
         endTime = (int) (Simulation.getEndTime() * 1000.);
     }
 
     public void runAll() {
-        while (currentTime < endTime) {
+        while (currentTime < endTime || Simulation.getPendingVehicles().size() > 0 || Vehicle.getIDList().size() > 0) {
             nextStep();
         }
+        Simulation.close();
     }
 
     public void nextStep() {
@@ -94,6 +97,11 @@ public class SumoManager {
 
     public void stepSubscribe(IStepTrigger o, boolean once) {
         TriggerInfo t = new TriggerInfo(o, -1, once);
+        stepTriggers.add(t);
+    }
+
+    public void stepSubscribe(IStepTrigger o, boolean once, int priority) {
+        TriggerInfo t = new TriggerInfo(o, -1 * priority, once);
         stepTriggers.add(t);
     }
 

@@ -25,7 +25,7 @@ public class RBC implements IStepTrigger, IMessageUser {
 
     public RBC(SumoManager sumoManager) {
         this.sumoManager = sumoManager;
-        this.sumoManager.stepSubscribe(this, false);
+        this.sumoManager.stepSubscribe(this, false, 10);
 
         this.net = new Net();
         this.net.load();

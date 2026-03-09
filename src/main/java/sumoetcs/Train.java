@@ -43,14 +43,16 @@ public class Train implements IStepTrigger, IMessageUser, IConnectionObserver {
         Vehicle.setSpeed(id, 0);
         Vehicle.setMinGap(id, 0);
         this.sumoManager = sumoManager;
-        sumoManager.stepSubscribe(this, true);
-        sumoManager.stepSubscribeIn(this, positionReportInterval, false);
-
-        connections = new ArrayList<Connection>(Arrays.asList(new BurstedConnection(sumoManager, typeId),
-                new HandoverConnection(sumoManager, typeId), new LostConnection(sumoManager, typeId)));
+        connections = Arrays.asList(new BurstedConnection(sumoManager, typeId),
+                new HandoverConnection(sumoManager, typeId), new LostConnection(sumoManager, typeId));
         for (var conn : connections) {
             conn.addObserver(this);
         }
+
+        sendPositionReport();
+        sumoManager.stepSubscribe(this, true);
+        sumoManager.stepSubscribeIn(this, positionReportInterval, false);
+        Vehicle.setParameter(id, "dyn_lastEOA", "0");
     }
 
     @Override
@@ -72,7 +74,7 @@ public class Train implements IStepTrigger, IMessageUser, IConnectionObserver {
             if (ma.getPositionEOA() != Double.POSITIVE_INFINITY && !ma.equalsPosition(lastEOA))
                 Vehicle.setStop(id, ma.getEdgeIdEOA(), ma.getPositionEOA(), 0, Simulation.getEndTime());
             lastEOA = ma;
-            Vehicle.setParameter(id, "dyn:lastEOA",
+            Vehicle.setParameter(id, "dyn_lastEOA",
                     Double.isInfinite(lastEOA.getPositionEOA()) ? "Inf"
                             : Double.toString(
                                     Vehicle.getDrivingDistance(id, lastEOA.getEdgeIdEOA(), lastEOA.getPositionEOA())
@@ -135,6 +137,10 @@ public class Train implements IStepTrigger, IMessageUser, IConnectionObserver {
     }
 
     public void free() {
+        for (var conn : connections) {
+            conn.removeObserver(this);
+        }
+        connected = false;
         sumoManager.stepUnsubscribe(this);
     }
 
@@ -154,7 +160,6 @@ public class Train implements IStepTrigger, IMessageUser, IConnectionObserver {
         Message m = new PositionReport(this, this.rbc, endPos, frontPos, route.subList(startIndex, index + 1),
                 route.subList(startIndex, route.size()));
         m.send(sumoManager);
-        Vehicle.setParameter(id, "dyn:lastPR", Double.toString(sumoManager.getCurrentTime() / 1000.));
     }
 
     private void checkCell() {
