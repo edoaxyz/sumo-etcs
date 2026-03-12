@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import org.eclipse.sumo.libsumo.Edge;
 import org.eclipse.sumo.libsumo.Lane;
 
+import sumoetcs.Consts;
 import sumoetcs.sumo.SumoManager;
 
 public class Net {
@@ -103,20 +104,20 @@ public class Net {
         return new HashMap<>(this.tracks);
     }
 
-    public Segment getSegmentFromEdges(double startPos, double endPos, List<String> edges) {
+    public Segment getSegmentFromEdges(double startPos, List<String> edges, boolean extend) {
         var tracks = new LinkedList<Track>();
         double finalStart = 0, finalEnd = 0;
         for (int i = 0; i < edges.size(); i++) {
             var edge = edges.get(i);
             var t = toTrack(edge, i == 0 ? startPos : 0);
             if (i == 0) finalStart = t.getValue();
-            else if (i == edges.size() - 1) finalEnd = t.getValue();
+            if (i == edges.size() - 1) finalEnd = toTrack(edge, -Consts.FLOAT_THRESHOLD).getValue();
             if (tracks.size() == 0 || t.getKey() != tracks.getLast()) tracks.add(t.getKey());
         }
-        finalEnd = endPos == -1 ? tracks.getLast().getLength() : finalEnd + endPos;
+        finalEnd = extend ? tracks.getLast().getLength() : finalEnd;
         if (tracks.size() == 0)
             return null;
-        return new Segment(finalStart, finalEnd, tracks);
+        return new Segment(finalStart, finalEnd, tracks, !extend);
     }
 
     public Entry<Track, Double> toTrack(String edgeId, double positionInEdge) {

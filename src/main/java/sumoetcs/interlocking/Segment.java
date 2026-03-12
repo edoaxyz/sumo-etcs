@@ -8,12 +8,17 @@ import java.util.Map;
 import sumoetcs.Consts;
 
 public class Segment {
+
     public Segment(Double startPosition, Double endPosition, List<Track> tracks) {
+        this(startPosition, endPosition, tracks, false);
+    }
+
+    public Segment(Double startPosition, Double endPosition, List<Track> tracks, boolean ignoreBlock) {
         Track t = tracks.getFirst();
         this.startPos = t.getBlockLength() > 0 ? Math.floor(startPosition / t.getBlockLength()) * t.getBlockLength()
                 : startPosition;
-        this.endPos = Double.isFinite(endPosition) ? Math.min(t.getBlockLength() > 0 ? Math.ceil(endPosition / t.getBlockLength()) * t.getBlockLength()
-                : endPosition, tracks.getLast().getLength() - 10e-6) : endPosition;
+        this.endPos = Double.isFinite(endPosition) ? Math.min(t.getBlockLength() > 0 && !ignoreBlock ? Math.ceil(endPosition / t.getBlockLength()) * t.getBlockLength()
+                : endPosition, tracks.getLast().getLength() - Consts.FLOAT_THRESHOLD) : endPosition;
         this.tracks = new ArrayList<>(tracks);
         for (int i = 0; i < this.tracks.size(); i++) {
             trackIndexes.put(this.tracks.get(i), i);

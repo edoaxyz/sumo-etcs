@@ -9,6 +9,7 @@ import java.util.Random;
 import org.eclipse.sumo.libsumo.Lane;
 import org.eclipse.sumo.libsumo.Simulation;
 import org.eclipse.sumo.libsumo.StringVector;
+import org.eclipse.sumo.libsumo.TraCINextStopDataVector;
 import org.eclipse.sumo.libsumo.Vehicle;
 import org.eclipse.sumo.libsumo.VehicleType;
 
@@ -62,8 +63,8 @@ public class Train implements IStepTrigger, IMessageUser, IConnectionObserver {
             if (lastEOA != null) {
                 if (ma.getTime() <= lastEOA.getTime())
                     return;
-                if (lastEOA.getPositionEOA() != Double.POSITIVE_INFINITY && lastEOA.getPositionEOA() >= 0
-                        && !ma.equalsPosition(lastEOA))
+                // Remove last stop
+                if (lastEOA.getPositionEOA() >= 0 && !ma.equalsPosition(lastEOA))
                     Vehicle.setStop(id, lastEOA.getEdgeIdEOA(), lastEOA.getPositionEOA(), 0, 0);
             } else {
                 if (ma.getPositionEOA() > length || !ma.getEdgeIdEOA().equals(Vehicle.getRoadID(id)))
@@ -71,14 +72,14 @@ public class Train implements IStepTrigger, IMessageUser, IConnectionObserver {
                 else
                     return;
             }
-            if (ma.getPositionEOA() != Double.POSITIVE_INFINITY && !ma.equalsPosition(lastEOA))
+            StringVector route = Vehicle.getRoute(id);
+            if (!(ma.getEdgeIdEOA().equals(route.getLast())
+                    && Lane.getLength(ma.getEdgeIdEOA() + "_0") - ma.getPositionEOA() <= Consts.FLOAT_THRESHOLD * 2) && !ma.equalsPosition(lastEOA))
                 Vehicle.setStop(id, ma.getEdgeIdEOA(), ma.getPositionEOA(), 0, Simulation.getEndTime());
             lastEOA = ma;
-            Vehicle.setParameter(id, "dyn_lastEOA",
-                    Double.isInfinite(lastEOA.getPositionEOA()) ? "Inf"
-                            : Double.toString(
-                                    Vehicle.getDrivingDistance(id, lastEOA.getEdgeIdEOA(), lastEOA.getPositionEOA())
-                                            + Vehicle.getDistance(id)));
+            Vehicle.setParameter(id, "dyn_lastEOA", Double.toString(
+                    Vehicle.getDrivingDistance(id, lastEOA.getEdgeIdEOA(), lastEOA.getPositionEOA())
+                            + Vehicle.getDistance(id)));
         }
     }
 
@@ -157,8 +158,16 @@ public class Train implements IStepTrigger, IMessageUser, IConnectionObserver {
             endPos = Lane.getLength(edgeId + "_0") + endPos;
             startIndex--;
         }
+        TraCINextStopDataVector nextStops = Vehicle.getNextStops(id);
+        int routeEndIndex = route.size();
+        for (var stop : nextStops) {
+            if (!stop.getStoppingPlaceID().equals("")) {
+                routeEndIndex = route.indexOf(stop.getLane().split("_")[0]) + 1;
+                break;
+            }
+        }
         Message m = new PositionReport(this, this.rbc, endPos, frontPos, route.subList(startIndex, index + 1),
-                route.subList(startIndex, route.size()));
+                route.subList(startIndex, routeEndIndex), routeEndIndex != route.size());
         m.send(sumoManager);
     }
 

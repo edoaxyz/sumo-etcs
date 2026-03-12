@@ -40,8 +40,10 @@ public class RBC implements IStepTrigger, IMessageUser {
     public void receive(Message message) {
         if (message instanceof PositionReport) {
             PositionReport prMess = (PositionReport) message;
-            if (!trains.containsKey(prMess.getTrain().getId())) return;
-            Segment nextSegment = this.net.getSegmentFromEdges(prMess.getBackPosition(), -1, prMess.getNextEdges());
+            if (!trains.containsKey(prMess.getTrain().getId()))
+                return;
+            Segment nextSegment = this.net.getSegmentFromEdges(prMess.getBackPosition(), prMess.getNextEdges(),
+                    prMess.getExtendNext());
             sendMovementAuthority(prMess.getTrain(), nextSegment);
         }
     }
@@ -60,7 +62,8 @@ public class RBC implements IStepTrigger, IMessageUser {
     }
 
     public void sendMovementAuthority(Train train, Segment segment) {
-        if (!trains.containsKey(train.getId())) return;
+        if (!trains.containsKey(train.getId()))
+            return;
         Occupation occ = occupations.get(train);
         if (occ == null) {
             occ = new Occupation(train, segment);
@@ -70,7 +73,8 @@ public class RBC implements IStepTrigger, IMessageUser {
         }
 
         // TODO: add startEdge to MA?
-        // var startEdge = net.toEdge(occ.getSegment(), occ.getStartPositionInTrack(occ.getFirstTrack()));
+        // var startEdge = net.toEdge(occ.getSegment(),
+        // occ.getStartPositionInTrack(occ.getFirstTrack()));
         var endEdge = net.toEdge(occ.getSegment().getLastTrack(), occ.getSegment().getEndPosition());
         MovementAuthority maMessage = new MovementAuthority(this, train, endEdge.getKey(), endEdge.getValue());
         maMessage.send(sumoManager);

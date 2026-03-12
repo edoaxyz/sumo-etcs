@@ -3,6 +3,7 @@ package sumoetcs.interlocking;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
+import sumoetcs.Consts;
 import sumoetcs.Train;
 
 public class Occupation {
@@ -33,12 +34,15 @@ public class Occupation {
         }
         Double realEndPosition = nextOccupation != null
                 ? nextOccupation.getSegment().getStartPositionInTrack(newTracks.getLast())
-                : Double.POSITIVE_INFINITY;
+                : newTracks.getLast().getLength();
         if (realEndPosition == 0) {
             newTracks.removeLast();
-            realEndPosition = newTracks.getLast().getLength() - 0.01;
+            realEndPosition = newTracks.getLast().getLength() - Consts.FLOAT_THRESHOLD;
         }
-        var newSegment = new Segment(segment.getStartPosition(), realEndPosition, newTracks);
+        if (segment.getLastTrack().equals(newTracks.getLast())) {
+            realEndPosition = Math.min(segment.getEndPosition(), realEndPosition);
+        }
+        var newSegment = new Segment(segment.getStartPosition(), realEndPosition, newTracks, true);
         boolean isTailDiff = !newSegment.tailEquals(this.currentSegment);
         this.currentSegment = newSegment;
         for (var newTrack : this.currentSegment.getTracks()) {

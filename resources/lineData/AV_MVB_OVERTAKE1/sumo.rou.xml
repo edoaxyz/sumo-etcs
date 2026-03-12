@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+  <trip id="0" type="etr1000" depart="0">
+    <stop trainStop="0+0" duration="0"/>
+    <stop trainStop="1+0" duration="120"/>
+    <stop trainStop="2+0" duration="120"/>
+    <stop trainStop="3+0" duration="120"/>
+    <stop trainStop="4+0" duration="0"/>
+  </trip>
+  <trip id="1" type="etr1000" depart="0">
+    <stop trainStop="0+1" duration="0"/>
+    <stop trainStop="1+1" speed="60"/>
+    <stop trainStop="2+1" speed="60"/>
+    <stop trainStop="3+1" speed="60"/>
+    <stop trainStop="4+1" duration="0"/>
+  </trip>
+</routes>

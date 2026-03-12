@@ -67,10 +67,11 @@ public class SumoManager {
     public static final Set<String> ALLOWED_CLASSES = new HashSet<>(
             Arrays.asList("rail", "rail_fast", "rail_urban", "rail_electric"));
 
-    public SumoManager(String configPath, String outputPath) {
+    public SumoManager(String configPath, String outputPath, String statisticPath) {
         Simulation.preloadLibraries();
         Simulation.start(new StringVector(new String[] { "sumo", "-c", configPath, "--start",
                 "--time-to-teleport", "-1", "--railsignal-moving-block", "--fcd-output", outputPath,
+                "--statistic-output", statisticPath,
                 "--fcd-output.distance", "--fcd-output.params", "dyn_lastEOA"}));
         currentTime = (int) (Simulation.getTime() * 1000.);
         endTime = (int) (Simulation.getEndTime() * 1000.);

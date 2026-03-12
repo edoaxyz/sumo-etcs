@@ -13,7 +13,8 @@ public class Client {
         Paths.get(args[1]).toFile().mkdirs(); // Create output folder
         SumoManager sumoManager = new SumoManager(
                 Paths.get(args[0]).toString(),
-                Paths.get(args[1], "fcd.xml").toString()
+                Paths.get(args[1], "fcd.xml").toString(),
+                Paths.get(args[1], "statistics.xml").toString()
             );
         RBC rbc = new RBC(sumoManager);
         sumoManager.runAll();
